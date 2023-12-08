@@ -1,0 +1,7 @@
+<h2>Posts</h2>
+<!--  La propriété [post] est utilisée pour envoyer chaque élément de la liste au composant 
+    enfant app-post-list-item. chaque post présent dans post$ sera envoyer au composant enfant 
+    et transitera par @Input() avant d'etre afficher comme formater dans app-post-list-item.component.html 
+-->
+
+<app-post-list-item *ngFor="let post of posts$ |async" [post]="post"> </app-post-list-item>
