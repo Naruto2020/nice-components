@@ -11,17 +11,17 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
-  styleUrl: './comments.component.scss',
+  styleUrls: ['./comments.component.scss'],
   animations: [
     trigger('listItem', [
       state('default', style({
         transform: 'scale(1)',
-        ' background-color': 'white',
+        'background-color': 'white',
         'z-index': 1
       })),
       state('active', style({
         transform: 'scale(1.05)',
-        ' background-color': 'rgb(201, 157, 242)',
+        'background-color': 'rgb(201, 157, 242)',
         'z-index': 2
       })),
       transition('default => active', [
@@ -34,23 +34,30 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   ]
 })
 export class CommentsComponent implements OnInit {
-
+ 
   @Input() comments!: Comment[];
   /**
    * @Output permet une communication du composant enfant vers le parent 
    * Qaund on click sue le bouton on emmet un evenement contenant les données du formulaire le cas échéant via la fonction onleaveComment 
    * On écoute dans post-list-item.html via (newComment)="onNewComment($event)"
    * Et on réagit dans post-list-item.component 
+   * @animationStates est un dictionaire qui vas récupérer les index respectifs des comments et luers attribuer un état 
    */
   @Output() newComment  = new EventEmitter<string>();
 
   commentCtrl!:FormControl;
 
+  animationStates: {[key: number]: 'default' | 'active'} = {};
+  //listItemAnnimationState: 'default' | 'active' = 'default';
+
   constructor(private formBuilder: FormBuilder){ }
 
   ngOnInit(): void {
   
-    this.commentCtrl = this.formBuilder.control('', [Validators.required, Validators.minLength(10)])
+    this.commentCtrl = this.formBuilder.control('', [Validators.required, Validators.minLength(10)]);
+    for(let index in this.comments) {
+      this.animationStates[index] = 'default';
+    }
   }
 
   onleaveComment(){
@@ -59,6 +66,14 @@ export class CommentsComponent implements OnInit {
     }
     this.newComment.emit(this.commentCtrl.value);
     this.commentCtrl.reset();
+  }
+
+  onListItemMouseEnter(index: number) {
+    this.animationStates[index] = 'active';
+  }
+
+  onListItemMouseLeave(index: number) {
+    this.animationStates[index] = 'default';
   }
 
 }
