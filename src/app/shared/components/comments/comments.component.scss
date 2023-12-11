@@ -1,0 +1,15 @@
+// mat-list-item {
+//     white-space: normal;
+// }
+
+.comments-row {
+  display: flex;
+  border-top: thin solid #555;
+  padding-top: 10px;
+  justify-content: space-around;
+  align-items: center;
+}
+
+mat-form-field {
+  width: 90%;
+}
